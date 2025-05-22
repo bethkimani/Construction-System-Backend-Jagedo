@@ -12,6 +12,11 @@ SECRET_KEY = os.environ['SECRET_KEY']  # Will raise error if missing
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
 # Application Definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'buildsync.urls'
@@ -134,3 +140,5 @@ CORS_ALLOWED_ORIGINS = [
 # Allauth Settings
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'none' if DEBUG else 'mandatory'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
